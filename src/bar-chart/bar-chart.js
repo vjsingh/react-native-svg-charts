@@ -4,7 +4,7 @@ import * as shape from 'd3-shape'
 import PropTypes from 'prop-types'
 import React, { PureComponent } from 'react'
 import { View } from 'react-native'
-import Svg from 'react-native-svg'
+import { SVG } from 'expo'
 import Path from '../animated-path'
 
 class BarChart extends PureComponent {
@@ -181,7 +181,7 @@ class BarChart extends PureComponent {
                 >
                     {
                         height > 0 && width > 0 &&
-                        <Svg style={{ height, width }}>
+                        <SVG style={{ height, width }}>
                             {
                                 React.Children.map(children, child => {
                                     if(child && child.props.belowChart) {
@@ -213,7 +213,7 @@ class BarChart extends PureComponent {
                                     }
                                 })
                             }
-                        </Svg>
+                        </SVG>
                     }
                 </View>
             </View>

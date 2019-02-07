@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import PropTypes from 'prop-types'
 import * as shape from 'd3-shape'
 import Path from './animated-path'
-import Svg, { G } from 'react-native-svg'
+import { Svg } from 'expo'
 
 class ProgressCircle extends PureComponent {
 
@@ -91,7 +91,7 @@ class ProgressCircle extends PureComponent {
                     height > 0 && width > 0 &&
                     <Svg style={{ height, width }}>
                         {/* center the progress circle*/}
-                        <G
+                        <Svg.G
                             x={ width / 2 }
                             y={ height / 2 }
                         >
@@ -122,7 +122,7 @@ class ProgressCircle extends PureComponent {
                                     return null
                                 })
                             }
-                        </G>
+                        </Svg.G>
                     </Svg>
                 }
             </View>

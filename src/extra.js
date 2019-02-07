@@ -1,15 +1,15 @@
 import React from 'react'
-import { G } from 'react-native-svg'
+import { Svg } from 'expo'
 
 const Extra = ({ children, ...props }) => {
     return (
-        <G>
+        <Svg.G>
             {
                 React.Children.map(children, child => {
                     return React.cloneElement(child, props)
                 })
             }
-        </G>
+        </Svg.G>
     )
 }
 

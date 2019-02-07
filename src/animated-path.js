@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Path } from 'react-native-svg'
+import { Svg } from 'expo'
 import * as interpolate from 'd3-interpolate-path'
 
 class AnimatedPath extends Component {
@@ -57,7 +57,7 @@ class AnimatedPath extends Component {
             this.component.setNativeProps({ d })
             // console.log(this.interpolator)
             // this.tween && console.log(this.tween.tween(delta))
-            // Tween the SVG path value according to what delta we're currently at.
+            // Tween the Svg path value according to what delta we're currently at.
 
             // Update our state with the new tween value and then jump back into
             // this loop.
@@ -69,7 +69,7 @@ class AnimatedPath extends Component {
 
     render() {
         return (
-            <Path
+            <Svg.Path
                 ref={ ref => this.component = ref }
                 { ...this.props }
             />
@@ -81,7 +81,7 @@ AnimatedPath.propTypes = {
     animate: PropTypes.bool,
     animationDuration: PropTypes.number,
     renderPlaceholder: PropTypes.func,
-    ...Path.propTypes,
+    ...Svg.Path.propTypes,
 }
 
 AnimatedPath.defaultProps = {

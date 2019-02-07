@@ -1,15 +1,15 @@
 import React from 'react'
-import { G } from 'react-native-svg'
+import { Svg } from 'expo'
 
 const Decorator = ({ children, data, ...props }) => {
     return (
-        <G>
+        <Svg.G>
             {
                 React.Children.map(children, child => {
                     return data.map((value, index) => React.cloneElement(child, { value, index, ...props }))
                 })
             }
-        </G>
+        </Svg.G>
     )
 }
 

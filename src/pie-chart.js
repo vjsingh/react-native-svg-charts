@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { View } from 'react-native'
 import PropTypes from 'prop-types'
 import * as shape from 'd3-shape'
-import Svg, { G, Path } from 'react-native-svg'
+import { Svg } from 'expo'
 
 class PieChart extends PureComponent {
 
@@ -130,7 +130,7 @@ class PieChart extends PureComponent {
                         height > 0 && width > 0 &&
                         <Svg style={{ height, width }}>
                             {/* center the progress circle*/}
-                            <G
+                            <Svg.G
                                 x={ width / 2 }
                                 y={ height / 2 }
                             >
@@ -145,7 +145,7 @@ class PieChart extends PureComponent {
                                 {pieSlices.map((slice, index) => {
                                     const { key, onPress, svg } = data[ index ]
                                     return (
-                                        <Path
+                                        <Svg.Path
                                             key={ key }
                                             onPress={ onPress }
                                             { ...svg }
@@ -163,7 +163,7 @@ class PieChart extends PureComponent {
                                         return null
                                     })
                                 }
-                            </G>
+                            </Svg.G>
                         </Svg>
                     }
                 </View>

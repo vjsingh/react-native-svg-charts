@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { G, Line } from 'react-native-svg'
+import { Svg } from 'expo'
 
 const Horizontal = ({ ticks = [], y, svg }) => {
     return (
-        <G>
+        <Svg.G>
             {
                 ticks.map(tick => (
-                    <Line
+                    <Svg.Line
                         key={ tick }
                         x1={ '0%' }
                         x2={ '100%' }
@@ -19,16 +19,16 @@ const Horizontal = ({ ticks = [], y, svg }) => {
                     />
                 ))
             }
-        </G>
+        </Svg.G>
     )
 }
 
 const Vertical = ({ ticks = [], x, svg }) => {
     return (
-        <G>
+        <Svg.G>
             {
                 ticks.map((tick, index) => (
-                    <Line
+                    <Svg.Line
                         key={ index }
                         y1={ '0%' }
                         y2={ '100%' }
@@ -41,16 +41,16 @@ const Vertical = ({ ticks = [], x, svg }) => {
                 ))
 
             }
-        </G>
+        </Svg.G>
     )
 }
 
 const Both = (props) => {
     return (
-        <G>
+        <Svg.G>
             <Horizontal { ...props }/>
             <Vertical { ...props }/>
-        </G>
+        </Svg.G>
     )
 }
 

@@ -4,7 +4,7 @@ import * as shape from 'd3-shape'
 import PropTypes from 'prop-types'
 import React, { PureComponent } from 'react'
 import { View } from 'react-native'
-import Svg from 'react-native-svg'
+import { Svg }  from 'expo'
 import Path from './animated-path'
 
 const CORNER_RADIUS = 10;
