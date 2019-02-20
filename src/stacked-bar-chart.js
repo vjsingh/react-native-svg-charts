@@ -147,8 +147,6 @@ class BarChart extends PureComponent {
                             ' L' + xLeft + ',' + yBottom +  // go to bottom-left
                             ' z';  // Return
                         } else {
-                          // If only 
-
                           // If only one bar, round both bottom and top
                           const numOfBars = series.length
                           if (series.length === 1) {
@@ -192,6 +190,7 @@ class BarChart extends PureComponent {
 
                     // Return line on '0' value for the bar
                     if (yTop === yBottom) {
+                      return null;
                       const HEIGHT_OF_BAR = 2;
                       const topOfBar = yBottom + HEIGHT_OF_BAR;
                       path = 'M' + xLeft + ',' + topOfBar +  // Start at top-left
@@ -360,6 +359,7 @@ BarChart.propTypes = {
     valueAccessor: PropTypes.func,
     roundBottom: PropTypes.bool,
     roundTop: PropTypes.bool,
+    dontShowZeroBars: PropTypes.bool,
 }
 
 BarChart.defaultProps = {
