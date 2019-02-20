@@ -147,6 +147,8 @@ class BarChart extends PureComponent {
                             ' L' + xLeft + ',' + yBottom +  // go to bottom-left
                             ' z';  // Return
                         } else {
+                          // If only 
+
                           // If only one bar, round both bottom and top
                           const numOfBars = series.length
                           if (series.length === 1) {
@@ -176,6 +178,7 @@ class BarChart extends PureComponent {
         return array.merge(
             series.map((serie, keyIndex) => {
                 return serie.map((entry, entryIndex) => {
+                    let color = colors[keyIndex];
                     let path = shape
                         .area()
                         .y0(d => y(d[0]))
@@ -197,7 +200,9 @@ class BarChart extends PureComponent {
                         ' v-' + HEIGHT_OF_BAR +  // Go down one pixel
                         ' L' + xLeft + ',' + yBottom +  // go to bottom-left
                         ' z';  // Return
-                      path = '';
+                      if (this.props.dontShowZeroBars) {
+                        color = 'white';
+                      }
                     } else {
                         if (roundTop || roundBottom) {
 
@@ -220,7 +225,7 @@ class BarChart extends PureComponent {
 
                     return {
                         path,
-                        color: colors[keyIndex],
+                        color,
                         key: keys[keyIndex],
                     }
                 })
@@ -359,7 +364,7 @@ BarChart.propTypes = {
     valueAccessor: PropTypes.func,
     roundBottom: PropTypes.bool,
     roundTop: PropTypes.bool,
-    dontShowZeroBars: PropTypes.bool,
+    dontShowZeroBars: PropTypes.boo,
 }
 
 BarChart.defaultProps = {
