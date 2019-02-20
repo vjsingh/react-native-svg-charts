@@ -190,7 +190,6 @@ class BarChart extends PureComponent {
 
                     // Return line on '0' value for the bar
                     if (yTop === yBottom) {
-                      return null;
                       const HEIGHT_OF_BAR = 2;
                       const topOfBar = yBottom + HEIGHT_OF_BAR;
                       path = 'M' + xLeft + ',' + topOfBar +  // Start at top-left
@@ -198,6 +197,7 @@ class BarChart extends PureComponent {
                         ' v-' + HEIGHT_OF_BAR +  // Go down one pixel
                         ' L' + xLeft + ',' + yBottom +  // go to bottom-left
                         ' z';  // Return
+                      path = '';
                     } else {
                         if (roundTop || roundBottom) {
 
