@@ -7,7 +7,7 @@ import { View } from 'react-native'
 import { Svg }  from 'expo'
 import Path from './animated-path'
 
-const CORNER_RADIUS = 10;
+const CORNER_RADIUS = 4;
 
 class BarChart extends PureComponent {
     static extractDataPoints(data, keys, order = shape.stackOrderNone, offset = shape.stackOffsetNone) {
@@ -84,10 +84,10 @@ class BarChart extends PureComponent {
     }
 
     makeRoundedBar(xLeft, xRight, yBottom, yTop, dontRoundBottom, dontRoundTop, dontRoundLeft, dontRoundRight) {
-      let topRightRound = ' h-10 ' + this.makeCorner(1, 1);
-      let bottomRightRound = ' v-10 ' + this.makeCorner(-1, 1);
-      let bottomLeftRound = ' h10 ' + this.makeCorner(-1, -1);
-      let topLeftRound = ' v10 ' + this.makeCorner(1, -1);
+      let topRightRound = ' h-' + CORNER_RADIUS + ' ' + this.makeCorner(1, 1);
+      let bottomRightRound = ' v-' + CORNER_RADIUS + ' ' + this.makeCorner(-1, 1);
+      let bottomLeftRound = ' h' + CORNER_RADIUS + ' ' + this.makeCorner(-1, -1);
+      let topLeftRound = ' v' + CORNER_RADIUS + ' ' + this.makeCorner(1, -1);
 
       if (dontRoundTop) {
         topRightRound = '';
@@ -147,14 +147,26 @@ class BarChart extends PureComponent {
                             ' L' + xLeft + ',' + yBottom +  // go to bottom-left
                             ' z';  // Return
                         } else {
-                          // If only 
+                          // Only round the top of the top bar
+                          const numOfBars = series.length
+                          if (numOfBars === 1) {
+                            path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, false, false, true);
+                          } else {
+                            if (keyIndex < numOfBars - 1) {
+                              path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop);
+                            } else {
+                              path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, false, false, true);
+                            }
+                          }
 
+                          /*
                           // If only one bar, round both bottom and top
                           const numOfBars = series.length
                           if (series.length === 1) {
                             path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop);
-                          
-                          // Otherwise, if multiple bars, only round the bottom of the first bar and the 
+
+                          /*
+                          // Otherwise, if multiple bars, only round the bottom of the first bar and the
                           // top of the last bar
                           } else if (series.length > 1) {
                             if (keyIndex === 0) {
@@ -163,6 +175,7 @@ class BarChart extends PureComponent {
                               path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, false, false, true);
                             }
                           }
+                          */
                         }
 
                         return {
@@ -205,21 +218,35 @@ class BarChart extends PureComponent {
                       }
                     } else {
                         if (roundTop || roundBottom) {
-
-                        // If only one bar, round both bottom and top
-                        const numOfBars = series.length
-                        if (series.length === 1) {
-                          path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, !roundBottom, !roundTop);
-                        
-                        // Otherwise, if multiple bars, only round the bottom of the first bar and the 
-                        // top of the last bar
-                        } else if (series.length > 1) {
-                          if (keyIndex === 0 && roundBottom) {
-                            path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, false, true);
-                          } else if (keyIndex === numOfBars - 1 && roundTop) {
-                            path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, true);
+                          // Only round the top of the top bar
+                          const numOfBars = series.length
+                          if (numOfBars === 1) {
+                            path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, true, false, true, true);
+                          } else {
+                            if (keyIndex < numOfBars - 1) {
+                              path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, true, true, true, true);
+                            } else {
+                              path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, true);
+                            }
                           }
-                        }
+
+                          /*
+
+                          // If only one bar, round both bottom and top
+                          const numOfBars = series.length
+                          if (series.length === 1) {
+                            path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, !roundBottom, !roundTop);
+
+                          // Otherwise, if multiple bars, only round the bottom of the first bar and the
+                          // top of the last bar
+                          } else if (series.length > 1) {
+                            if (keyIndex === 0 && roundBottom) {
+                              path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, false, true);
+                            } else if (keyIndex === numOfBars - 1 && roundTop) {
+                              path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, true);
+                            }
+                          }
+                          */
                       }
                     }
 
@@ -364,7 +391,7 @@ BarChart.propTypes = {
     valueAccessor: PropTypes.func,
     roundBottom: PropTypes.bool,
     roundTop: PropTypes.bool,
-    dontShowZeroBars: PropTypes.boo,
+    dontShowZeroBars: PropTypes.bool,
 }
 
 BarChart.defaultProps = {
