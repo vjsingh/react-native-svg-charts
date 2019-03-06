@@ -119,7 +119,7 @@ class BarChart extends PureComponent {
     }
 
     calcAreas(x, y, series, roundBottom, roundTop) {
-        const { horizontal, colors, keys } = this.props
+        const { horizontal, colors, specificColors, keys } = this.props
 
         if (horizontal) {
             return array.merge(
@@ -191,7 +191,12 @@ class BarChart extends PureComponent {
         return array.merge(
             series.map((serie, keyIndex) => {
                 return serie.map((entry, entryIndex) => {
-                    let color = colors[keyIndex];
+                    let color;
+                    if (specificColors) {
+                        color = specificColors(entryIndex, keyIndex);
+                    } else {
+                        color = colors[keyIndex];
+                    }
                     let path = shape
                         .area()
                         .y0(d => y(d[0]))
@@ -204,24 +209,39 @@ class BarChart extends PureComponent {
                     const yTop= y(entry[1]);
                     const yBottom= y(entry[0]);
 
+                    // Determine whether this is the last bar with any value
+                    // entry[1] is the current value, and the second term gets the end of the series value
+                  const isLastBar = entry[1] === series[series.length -1][entryIndex][1];
+
                     // Return line on '0' value for the bar
                     if (yTop === yBottom) {
-                      const HEIGHT_OF_BAR = 2;
+                      let HEIGHT_OF_BAR = 2;
+                      if (this.props.dontShowZeroBars) {
+                        HEIGHT_OF_BAR = 0;
+                        // color = 'white';
+                      }
                       const topOfBar = yBottom + HEIGHT_OF_BAR;
                       path = 'M' + xLeft + ',' + topOfBar +  // Start at top-left
                         ' L' + xRight + ',' + topOfBar +  // go to top-right
                         ' v-' + HEIGHT_OF_BAR +  // Go down one pixel
                         ' L' + xLeft + ',' + yBottom +  // go to bottom-left
                         ' z';  // Return
-                      if (this.props.dontShowZeroBars) {
-                        color = 'white';
-                      }
                     } else {
                         if (roundTop || roundBottom) {
+                          console.log(entry[1]);
+                          console.log(isLastBar);
                           // Only round the top of the top bar
+                          if (isLastBar) {
+                            // Round only the top.
+                            path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, true);
+                          } else {
+                            // Round none.
+                            path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, true, true, true, true);
+                          }
+                          /*
                           const numOfBars = series.length
                           if (numOfBars === 1) {
-                            path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, true, false, true, true);
+                            path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, true);
                           } else {
                             if (keyIndex < numOfBars - 1) {
                               path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, true, true, true, true);
@@ -229,6 +249,7 @@ class BarChart extends PureComponent {
                               path = this.makeRoundedBar(xLeft, xRight, yBottom, yTop, true);
                             }
                           }
+                          */
 
                           /*
 
@@ -373,6 +394,7 @@ BarChart.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     keys: PropTypes.arrayOf(PropTypes.string).isRequired,
     colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+    specificColors: PropTypes.func,
     offset: PropTypes.func,
     order: PropTypes.func,
     style: PropTypes.any,
